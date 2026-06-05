@@ -84,12 +84,13 @@ func displayProducts() {
 }
 
 func updateProduct() {
-    var id: Int
-    var updatedName: String
-    var updatedCategory: String
-    var updatedPrice: Double
-    var updatedQuantity: Int
+    if products.isEmpty {
+        print("No products available. Please add a product first")
+        return
+    }
     
+    //Get ID to update
+    var id: Int
     repeat {
         id = getIntInput(prompt: "Enter Product ID to update:")
         if !products.contains(where: { $0.id == id }) {
@@ -97,30 +98,70 @@ func updateProduct() {
         }
     } while !products.contains(where: { $0.id == id })
     
+    let index = products.firstIndex(where: { $0.id == id })!
+    
+    //Update name
     print("Enter updated name (leave blank to skip):")
-    if let updatedName = readLine(), !updatedName.isEmpty {
-        products.first(where: { $0.id == id })!.name = updatedName
-    } else {
-
+    let newName = readLine()!
+    if !newName.isEmpty {
+        products[index].name = newName
     }
     
+    //Update category
+    print("Enter updated category (leave blank to skip):")
+    let newCategory = readLine()!
+    if !newCategory.isEmpty {
+        products[index].category = newCategory
+    }
+    
+    //Update price
+    print("Enter updated price (leave blank to skip):")
+    let newPriceInput = readLine()!
+    if !newPriceInput.isEmpty {
+        if let newPrice = Double(newPriceInput), newPrice > 0 {
+            products[index].price = newPrice
+        } else {
+            print("Invalid price. Price not updated.")
+        }
+    }
+    
+    //Update quantity
+    print("Enter updated quantity (leave blank to skip):")
+    let newQuantityInput = readLine()!
+    if !newQuantityInput.isEmpty {
+        if let newQuantity = Int(newQuantityInput), newQuantity >= 0 {
+            products[index].quantity = newQuantity
+        } else {
+            print("Invalid quantity. Quantity not updated.")
+        }
+    }
+    
+    print("Product Updated.")
 }
 
 func deleteProduct() {
-    var id: Int
+    if products.isEmpty {
+        print("No products available. Please add a product first")
+        return
+    }
     
-    repeat {
-        id = getIntInput(prompt: "Enter Product ID to delete:")
-        if !products.contains(where: { $0.id == id }) {
-            print("Product ID not found. Please try again.")
-        }
-    } while !products.contains(where: { $0.id == id })
+    let id = getIntInput(prompt: "Enter Product ID to delete:")
     
+    if !products.contains(where: { $0.id == id }) {
+        print("Product ID not found. Please try again.")
+        return
+    }
+
     products.removeAll(where: { $0.id == id })
     print("Product deleted.")
 }
 
 func sortProducts() {
+    if products.isEmpty {
+        print("No products available. Please add a product first")
+        return
+    }
+    
     print("Sort products by:")
     print("1. Name")
     print("2. Category")
