@@ -8,13 +8,13 @@
 import Foundation
 
 func menu() {
-    print("Product Management System\n")
+    print("Product Management System")
     print("1. Add Product")
     print("2. Display Products")
     print("3. Update Product")
     print("4. Delete Product")
     print("5. Sort Products")
-    print("6. Exit)\n")
+    print("6. Exit\n")
     
     let choice: Int = getIntInput(prompt: "Enter your choice: ")
     
@@ -22,6 +22,7 @@ func menu() {
     case 1:
         addProduct()
     case 2:
+        print("All Products:")
         displayProducts()
     case 3:
         updateProduct()
@@ -29,6 +30,8 @@ func menu() {
         deleteProduct()
     case 5:
         sortProducts()
+        print("Sorted products:")
+        displayProducts()
     case 6:
         print("Exiting...")
         exit(0)
@@ -60,3 +63,9 @@ func getDoubleInput(prompt: String) -> Double {
     
     return number
 }
+
+var shouldExit = false
+while !shouldExit {
+    menu()
+}
+
